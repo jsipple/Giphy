@@ -5,10 +5,10 @@ let q = "&q=star+wars";
 let url;
 function getURL() {
     url = api + apiKey + q
-    $.getJSON(url, function(obj) {
-        for (let i = 0; i < obj.data.length; i++)
-        // change this to create an image tag not look for one in the html
-        $("#img").attr("src", obj.data[i].images.fixed_height_still.url)
+    $.getJSON(url, function(gif) {
+        for (let i = 0; i < gif.data.length; i++)
+        // below creates an image tag and adds it currently showing 25 gifs
+        $("#gifs").append($("<img>").attr("src", gif.data[i].images.original.url));
     })
 }
 getURL()
