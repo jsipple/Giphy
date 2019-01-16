@@ -14,7 +14,11 @@ function getURL() {
 }
 // below creating a button but not adding text
 $("#submit").on("click", function() {
-    $("#buttons").append($("<button>").text($("#submit").val()))
-})
+    // creating a button but not adding what i need
+    let gifButton = $("<button>").attr("class", "gifBtn").text($("#text").val())
+    $("#buttons").append(gifButton), {
+        // insert click function here
+    };
+});
 getURL()
 console.log(url)
