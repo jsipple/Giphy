@@ -11,34 +11,38 @@ function getURL() {
         for (let i = 0; i < obj.data.length; i++) {
         // below creates an image tag and adds it currently showing 25 gifs
         // this ratings is not working when appended
-        ratings = $("<p>").text(obj.data[i].rating)
-        let gifImg = $("<img>").attr("src", obj.data[i].images.original_still.url).attr("class", "still")
-        gifImg.append(ratings)
+        ratings = $("<caption>").text(obj.data[i].rating)
+        // console.log(obj.data[i].rating)
+        let gifImg = $("<img>").attr("src", obj.data[i].images.original_still.url).attr("class", "still").on("click", function() {
+            if ($(this).attr("class") === "still") {
+            $(this).attr("src", obj.data[i].images.original.url).toggleClass("still gif")
+        } else {
+            $(this).attr("src", obj.data[i].images.original_still.url).toggleClass("still gif")
+            }
+        })
+        
+        // $(".gif").on("click", function() {
+        //     $("this").attr("src", obj.data[i].images.original_still.url).toggleClass("gif still")
+        // })
+        gifImg.prepend(ratings)
         $("#gifs").append(gifImg);
     }
-})
+}).catch( error => console.log("an error"))
 }
 // using this to load the original instead of the still or vise versa
 // can i get the obj.data[i] from what i'm clicking? maybe something wierd like making i the class
-// $(".still").on("click", function() {
-//     $("this").attr.("src", ).removeClass("still").addClass("gif")
-// })
-// $(".gif").on("click", function() {
-//     $("this").attr.("src", ).removeClass("gif").addClass("still")
-// })
 // below creating a button but not adding text
-$("#submit").on("click", function() {
+$("#submit").on("submit", function(event) {
     // creating a button but not adding what i need
-    let gifButton = $("<button>").attr("class", "gifBtn").text($("#text").val())
-    $("#buttons").append(gifButton), {
-        // insert click function here
-    };
+    event.preventDefault();
+    let gifButton = $("<button>").attr("class", "gifBtn").text(event.originalEvent.target[0].value)
+    $("#buttons").append(gifButton).on("click", function() {
+    q = ""
+    q = `&q=${gifButton.text()}`
+    q = q.replace(" ", "+")
+    getURL();
+    })
 });
 // not executing on click
-$(".gifBtn").on("click", function() {
-    q = $(this).textContent
-    console.log(q)
-    getURL();
-});
 getURL();
 console.log(url)
