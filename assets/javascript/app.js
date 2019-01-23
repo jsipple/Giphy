@@ -11,7 +11,7 @@ function getURL() {
         for (let i = 0; i < obj.data.length; i++) {
         // below creates an image tag and adds it currently showing 25 gifs
         // this ratings is not working when appended
-        ratings = $("<caption>").text(obj.data[i].rating)
+        ratings = $("<p>").text("Rating: " + obj.data[i].rating)
         // console.log(obj.data[i].rating)
         let gifImg = $("<img>").attr("src", obj.data[i].images.original_still.url).attr("class", "still").on("click", function() {
             if ($(this).attr("class") === "still") {
@@ -20,12 +20,7 @@ function getURL() {
             $(this).attr("src", obj.data[i].images.original_still.url).toggleClass("still gif")
             }
         })
-        
-        // $(".gif").on("click", function() {
-        //     $("this").attr("src", obj.data[i].images.original_still.url).toggleClass("gif still")
-        // })
-        gifImg.prepend(ratings)
-        $("#gifs").append(gifImg);
+        $("#gifs").append(gifImg).append(ratings);
     }
 }).catch( error => console.log("an error"))
 }
@@ -35,14 +30,26 @@ function getURL() {
 $("#submit").on("submit", function(event) {
     // creating a button but not adding what i need
     event.preventDefault();
-    let gifButton = $("<button>").attr("class", "gifBtn").text(event.originalEvent.target[0].value)
-    $("#buttons").append(gifButton).on("click", function() {
+    let gifButton = $("<button>").attr("class", "gifBtn").text($("#text").val().trim())
+    $("#buttons").append(gifButton).on("click", function() {  
     q = ""
     q = `&q=${gifButton.text()}`
     q = q.replace(" ", "+")
+    let imgs = $("#gifs")
+    imgs.html("")
     getURL();
     })
 });
+
+
+$(".startBtn").on("click", function() {
+    q = `&q=${$(this).text()}`
+    q = q.replace(" ", "+")
+    let imgs = $("#gifs")
+    imgs.html("")
+    getURL();
+    })
+
 // not executing on click
 getURL();
 console.log(url)
